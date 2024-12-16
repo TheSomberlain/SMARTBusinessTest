@@ -1,0 +1,51 @@
+# Build and build artifacts
+bin/
+obj/
+*.log
+*.user
+*.userosscache
+*.suo
+*.pdb
+*.cache
+*.ilk
+*.map
+*.ipch
+*.tlog
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Visual Studio temporary files, caches, and logs
+.vs/
+.vscode/
+*.vcxproj.user
+*.vcxproj.filters
+*.pidb
+*.opendb
+*.sln.docstates
+
+# Configuration and generated files
+appsettings.*.json
+appsettings.json
+launchSettings.json
+
+# Resharper files
+_ReSharper*/
+*.DotSettings.user
+
+# IIS Express
+iisexpress/
+*.vspscc
+
+# Node.js modules
+node_modules/
+
+# MacOS and Linux files
+.DS_Store
+*.swp
+*.swo
+Thumbs.db
