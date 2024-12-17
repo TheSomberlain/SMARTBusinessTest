@@ -18,6 +18,5 @@ namespace SMARTBusinessTest.Entities
         [Column("Unit_ContractId")]
         public Guid ContractId { get; set; }
         public PlacementContract Contract { get; set; }
-
     }
 }

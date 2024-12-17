@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using SMARTBusinessTest.Application.Filters;
+using SMARTBusinessTest.Application.Interfaces;
+using SMARTBusinessTest.Application.Services;
 using SMARTBusinessTest.Data;
 
 namespace SMARTBusinessTest
@@ -10,13 +13,18 @@ namespace SMARTBusinessTest
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddLogging();
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add<ContractExceptionFilter>();
+            });
+            builder.Services.AddTransient<IPlacementContractService, PlacementContractService>();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddScoped<ContractExceptionFilter>();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<EquipmentContractsDbContext>(options =>
-            options.UseSqlServer("server=DESKTOP-0BU0HTI\\SQLEXPRESS;Database=SMARTBusinessDb;Trusted_Connection=True;"));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

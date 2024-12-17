@@ -17,6 +17,5 @@ namespace SMARTBusinessTest.Entities
         [Column("Facility_Area")]
         public int Area { get; set; }
         public ICollection<PlacementContract> Contracts { get; set; }
-
     }
 }
