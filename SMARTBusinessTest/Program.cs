@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using SMARTBusinessTest.Application.Filters;
-using SMARTBusinessTest.Application.Interfaces;
+using Microsoft.OpenApi.Models;
+using SMARTBusinessTest.Application.Constants;
+using SMARTBusinessTest.Domain.Interfaces;
 using SMARTBusinessTest.Application.Services;
-using SMARTBusinessTest.Data;
+using SMARTBusinessTest.Infrastructure;
+using SMARTBusinessTest.Web.Filters;
 
 namespace SMARTBusinessTest
 {
@@ -12,22 +14,27 @@ namespace SMARTBusinessTest
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddLogging();
             builder.Services.AddControllers(options =>
             {
                 options.Filters.Add<ContractExceptionFilter>();
+                options.Filters.Add<ApiAuthFilter>();
             });
             builder.Services.AddTransient<IPlacementContractService, PlacementContractService>();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddScoped<ContractExceptionFilter>();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<ApiAuthFilter>();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.OperationFilter<SwaggerAuthFilter>();
+                options.SupportNonNullableReferenceTypes();
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "SMARTBusinessTestAPI", Version = "v1" });
+            });
             builder.Services.AddDbContext<EquipmentContractsDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString(DbConstants.ConnectionSetting)));
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

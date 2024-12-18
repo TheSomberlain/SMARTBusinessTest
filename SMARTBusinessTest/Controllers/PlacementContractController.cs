@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SMARTBusinessTest.Application.Commands;
-using SMARTBusinessTest.Application.Filters;
-using SMARTBusinessTest.Application.Interfaces;
-
+using SMARTBusinessTest.Domain.Commands;
+using SMARTBusinessTest.Domain.Interfaces;
+using SMARTBusinessTest.Web.Filters;
 
 namespace SMARTBusinessTest.Controllers
 {
     [Route("api/v1/contract")]
     [ApiController]
+    [ServiceFilter(typeof(ContractExceptionFilter))]
+    [ServiceFilter(typeof(ApiAuthFilter))]
     public class PlacementContractController : ControllerBase
     {
         private readonly IPlacementContractService _placementContractService;
@@ -18,7 +19,7 @@ namespace SMARTBusinessTest.Controllers
         }
 
         [HttpGet]
-        [ServiceFilter(typeof(ContractExceptionFilter))]
+ 
         public async Task<IActionResult> Get(CancellationToken token)
         {
             var contracts = await _placementContractService.GetPlacementContractsAsync(token);
@@ -26,9 +27,12 @@ namespace SMARTBusinessTest.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(ContractExceptionFilter))]
         public async Task<IActionResult> Post([FromBody] PlacementContractCreateCommand newContract, CancellationToken token)
         {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
             await _placementContractService.CreatePlacementContractAsync(newContract, token);
             return StatusCode(StatusCodes.Status201Created);
         }

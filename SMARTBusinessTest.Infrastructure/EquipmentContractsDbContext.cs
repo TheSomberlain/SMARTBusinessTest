@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SMARTBusinessTest.Domain.Entities;
-using SMARTBusinessTest.Infrastructure.Utils;
 
-namespace SMARTBusinessTest.Data
+namespace SMARTBusinessTest.Infrastructure
 {
     public class EquipmentContractsDbContext : DbContext
     {
