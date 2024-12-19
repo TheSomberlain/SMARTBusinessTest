@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SMARTBusinessTest.Domain.Entities;
+using System.Xml;
 
 namespace SMARTBusinessTest.Infrastructure
 {
@@ -35,6 +36,26 @@ namespace SMARTBusinessTest.Infrastructure
                 pe.Property(x => x.Code).IsRequired().HasMaxLength(50);
             });
 
+            modelBuilder.Entity<EquipmentUnit>(pe =>
+            {
+                pe.Property(x => x.Amount).IsRequired();
+                pe.Property(x => x.TotalArea).IsRequired();
+            });
+
+            modelBuilder.Entity<ProductionFacility>()
+              .HasIndex(e => e.Code)
+              .IsUnique();
+            modelBuilder.Entity<ProductionFacility>()
+              .HasIndex(e => e.Name)
+              .IsUnique();
+
+            modelBuilder.Entity<ProcessEquipment>()
+              .HasIndex(e => e.Code)
+              .IsUnique();
+            modelBuilder.Entity<ProcessEquipment>()
+              .HasIndex(e => e.Name)
+              .IsUnique();
+
             modelBuilder.Entity<PlacementContract>()
                 .HasKey(pc => pc.Id);
             modelBuilder.Entity<PlacementContract>()
@@ -53,7 +74,5 @@ namespace SMARTBusinessTest.Infrastructure
                 .WithMany(pe => pe.Units)
                 .HasForeignKey(eu => eu.EquipmentId);
         }
-
-
     }
 }

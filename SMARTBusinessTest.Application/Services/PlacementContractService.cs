@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SMARTBusinessTest.Domain.Commands;
-using SMARTBusinessTest.Domain.DTOs;
+using SMARTBusinessTest.Application.Commands;
+using SMARTBusinessTest.Application.DTOs;
 using SMARTBusinessTest.Domain.Exceptions;
-using SMARTBusinessTest.Domain.Interfaces;
+using SMARTBusinessTest.Application.Interfaces;
 using SMARTBusinessTest.Domain.Entities;
 using SMARTBusinessTest.Infrastructure;
 
@@ -37,7 +37,7 @@ namespace SMARTBusinessTest.Application.Services
                 throw new InvalidInputDataException("Invalid input data");
 
             var newPlacementContract = await AdjectContractFromCommand(newPlacementContractCommand, cancellationToken);
-            if (!IsPlacementContractValid(newPlacementContract))
+            if (!IsPlacementValid(newPlacementContract.TotalEquipmentArea, newPlacementContract.ProductionFacility.Area))
                 throw new OutOfPlacementException("The specified amount of equipment exceeds the facility area.");
 
             _dbContext.EquipmentUnits.AddRange(newPlacementContract.EquipmentUnits);
@@ -45,10 +45,9 @@ namespace SMARTBusinessTest.Application.Services
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        private bool IsPlacementContractValid(PlacementContract newPlacementContract)
-        {
-            var totalArea = CalculateTotalArea(newPlacementContract);
-            return totalArea < newPlacementContract.ProductionFacility.Area;
+        private bool IsPlacementValid(long requiredArea, long actualArea)
+        {      
+            return requiredArea < actualArea;
         }
 
         private async Task<bool> IsCommandInputValid(PlacementContractCreateCommand newPlacementContractCommand,
@@ -56,15 +55,15 @@ namespace SMARTBusinessTest.Application.Services
         {
             var facilityExists = await _dbContext.ProductionFacilities
                 .AnyAsync(x => x.Code == newPlacementContractCommand.FacilityCode, cancellationToken);
-            if (!facilityExists) return false;
 
             var equipmentCodes = newPlacementContractCommand.EquipmentUnits.Select(x => x.Code).ToList();
             var existingEquipmentCodes = await _dbContext.ProcessEquipment
                 .Where(x => equipmentCodes.Contains(x.Code))
                 .Select(x => x.Code)
                 .ToListAsync(cancellationToken);
-
-            return equipmentCodes.All(existingEquipmentCodes.Contains);
+            var equipmentExists = equipmentCodes.All(existingEquipmentCodes.Contains);
+            var amountPositive = newPlacementContractCommand.EquipmentUnits.Select(x => x.Amount).All(x => x > 0);
+            return facilityExists && equipmentExists && amountPositive;
         }
 
         private async Task<PlacementContract> AdjectContractFromCommand(PlacementContractCreateCommand newPlacementContractCommand,
@@ -85,25 +84,27 @@ namespace SMARTBusinessTest.Application.Services
                     {
                         Amount = unit.Amount,
                         Equipment = equipment,
-                        EquipmentId = equipment.Id
+                        EquipmentId = equipment.Id,
+                        TotalArea = unit.Amount * equipment.Area
                     });
                 }
             }
+
+            var totalContractArea = equipmentUnits.Select(x => x.TotalArea).Sum();
+            if(!IsTotalAreaValid(totalContractArea))
+                throw new InvalidInputDataException("Invalid input data");
+
             return new PlacementContract() 
             {
                 ProductionFacility = facility,
                 EquipmentUnits = equipmentUnits,
+                TotalEquipmentArea = (int)totalContractArea
             };
         }
 
-        private static long CalculateTotalArea(PlacementContract placementContract)
+        private bool IsTotalAreaValid(long totalArea)
         {
-            long totalArea = 0;
-            foreach (var unit in placementContract.EquipmentUnits)
-            {
-                totalArea += unit.Equipment.Area * unit.Amount;
-            }
-            return totalArea;
+            return  totalArea < int.MaxValue;
         }
     }
 }

@@ -6,5 +6,6 @@
         public static string OutOfPlacement = "The specified amount of equipment exceeds the facility area";
         public static string TokenCancelled = "Request was cancelled, operation took too long";
         public static string InternalServerError = "The problem on the server side occured";
+        public const string InvalidRange = "Value must be between 0 and 2000000.";
     }
 }

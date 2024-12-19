@@ -14,6 +14,7 @@ namespace SMARTBusinessTest.Domain.Entities
 
         [Column("Unit_Amount")]
         public int Amount { get; set; }
+        public int TotalArea {  get; set; }
 
         [Column("Unit_ContractId")]
         public Guid ContractId { get; set; }

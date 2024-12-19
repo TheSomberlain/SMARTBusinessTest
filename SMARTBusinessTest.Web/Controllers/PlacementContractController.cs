@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SMARTBusinessTest.Domain.Commands;
-using SMARTBusinessTest.Domain.Interfaces;
+using SMARTBusinessTest.Application.Commands;
+using SMARTBusinessTest.Application.Interfaces;
 using SMARTBusinessTest.Web.Filters;
 
-namespace SMARTBusinessTest.Controllers
+namespace SMARTBusinessTest.Web.Controllers
 {
     [Route("api/v1/contract")]
     [ApiController]

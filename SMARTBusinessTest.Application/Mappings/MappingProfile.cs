@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SMARTBusinessTest.Domain.DTOs;
+using SMARTBusinessTest.Application.DTOs;
 using SMARTBusinessTest.Domain.Entities;
 
 namespace SMARTBusinessTest.Domain.Mappings
@@ -18,13 +18,15 @@ namespace SMARTBusinessTest.Domain.Mappings
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Equipment.Code))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Equipment.Name))
-                .ForMember(dest => dest.Area, opt => opt.MapFrom(src => src.Equipment.Area))
-                .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount));
+                .ForMember(dest => dest.UnitArea, opt => opt.MapFrom(src => src.Equipment.Area))
+                .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
+                .ForMember(dest => dest.TotalArea, opt => opt.MapFrom(src => src.TotalArea));
 
             CreateMap<PlacementContract, PlacementContractDTO>()
                 .ForMember(dest => dest.ContractId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.EquipmentUnits, opt => opt.MapFrom(src => src.EquipmentUnits))
-                .ForMember(dest => dest.ProductionFacility, opt => opt.MapFrom(src => src.ProductionFacility));
+                .ForMember(dest => dest.ProductionFacility, opt => opt.MapFrom(src => src.ProductionFacility))
+                .ForMember(dest => dest.TotalArea, opt => opt.MapFrom(src => src.TotalEquipmentArea));
         }
     }
 }

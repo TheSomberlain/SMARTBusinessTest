@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SMARTBusinessTest.Application.Constants;
-using SMARTBusinessTest.Domain.Interfaces;
+using SMARTBusinessTest.Application.Interfaces;
 using SMARTBusinessTest.Application.Services;
 using SMARTBusinessTest.Infrastructure;
 using SMARTBusinessTest.Web.Filters;
 
-namespace SMARTBusinessTest
+namespace SMARTBusinessTest.Web
 {
     public class Program
     {
@@ -38,7 +38,10 @@ namespace SMARTBusinessTest
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI( c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                });
             }
 
             app.UseHttpsRedirection();

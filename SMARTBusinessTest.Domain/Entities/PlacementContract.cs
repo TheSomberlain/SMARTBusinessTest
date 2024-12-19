@@ -13,5 +13,6 @@ namespace SMARTBusinessTest.Domain.Entities
         public Guid FacilityId { get; set; }
         public ProductionFacility ProductionFacility { get; set; }
         public ICollection<EquipmentUnit> EquipmentUnits { get; set; }
+        public int TotalEquipmentArea {  get; set; }
     }
 }

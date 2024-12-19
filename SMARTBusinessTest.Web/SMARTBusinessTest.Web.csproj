@@ -4,7 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <StartupObject>SMARTBusinessTest.Program</StartupObject>
+    <StartupObject>SMARTBusinessTest.Web.Program</StartupObject>
+    <IntermediateOutputPath>.\obj\</IntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,10 +22,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

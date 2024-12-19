@@ -1,4 +1,4 @@
-﻿namespace SMARTBusinessTest.Domain.Commands
+﻿namespace SMARTBusinessTest.Application.Commands
 {
     public class PlacementContractCreateCommand
     {

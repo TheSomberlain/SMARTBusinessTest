@@ -1,9 +1,9 @@
 using Moq;
 using Microsoft.AspNetCore.Mvc;
-using SMARTBusinessTest.Controllers;
-using SMARTBusinessTest.Domain.Interfaces;
-using SMARTBusinessTest.Domain.Commands;
-using SMARTBusinessTest.Domain.DTOs;
+using SMARTBusinessTest.Web.Controllers;
+using SMARTBusinessTest.Application.Interfaces;
+using SMARTBusinessTest.Application.Commands;
+using SMARTBusinessTest.Application.DTOs;
 
 namespace SMARTBusinessTest.UnitTests.Filters
 {

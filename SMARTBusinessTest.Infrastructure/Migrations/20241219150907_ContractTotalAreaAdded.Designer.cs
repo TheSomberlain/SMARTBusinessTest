@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SMARTBusinessTest.Infrastructure;
 
@@ -11,9 +12,10 @@ using SMARTBusinessTest.Infrastructure;
 namespace SMARTBusinessTest.Infrastructure.Migrations
 {
     [DbContext(typeof(EquipmentContractsDbContext))]
-    partial class EquipmentContractsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241219150907_ContractTotalAreaAdded")]
+    partial class ContractTotalAreaAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,16 +95,10 @@ namespace SMARTBusinessTest.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Equipment_Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Equipment");
                 });
@@ -126,16 +122,10 @@ namespace SMARTBusinessTest.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Facility_Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Facility");
                 });

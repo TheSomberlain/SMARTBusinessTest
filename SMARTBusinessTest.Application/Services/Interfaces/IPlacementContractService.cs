@@ -1,7 +1,7 @@
-﻿using SMARTBusinessTest.Domain.Commands;
-using SMARTBusinessTest.Domain.DTOs;
+﻿using SMARTBusinessTest.Application.Commands;
+using SMARTBusinessTest.Application.DTOs;
 
-namespace SMARTBusinessTest.Domain.Interfaces
+namespace SMARTBusinessTest.Application.Interfaces
 {
     public interface IPlacementContractService
     {

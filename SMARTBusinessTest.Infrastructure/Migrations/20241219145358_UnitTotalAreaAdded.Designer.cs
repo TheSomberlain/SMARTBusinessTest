@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SMARTBusinessTest.Data;
+using SMARTBusinessTest.Infrastructure;
 
 #nullable disable
 
-namespace SMARTBusinessTest.Data.Migrations
+namespace SMARTBusinessTest.Infrastructure.Migrations
 {
     [DbContext(typeof(EquipmentContractsDbContext))]
-    [Migration("20241216162547_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241219145358_UnitTotalAreaAdded")]
+    partial class UnitTotalAreaAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace SMARTBusinessTest.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SMARTBusinessTest.Entities.EquipmentUnit", b =>
+            modelBuilder.Entity("SMARTBusinessTest.Domain.Entities.EquipmentUnit", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,6 +43,9 @@ namespace SMARTBusinessTest.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Unit_EquipmentId");
 
+                    b.Property<int>("TotalArea")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ContractId");
@@ -52,7 +55,7 @@ namespace SMARTBusinessTest.Data.Migrations
                     b.ToTable("Unit");
                 });
 
-            modelBuilder.Entity("SMARTBusinessTest.Entities.PlacementContract", b =>
+            modelBuilder.Entity("SMARTBusinessTest.Domain.Entities.PlacementContract", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,7 +73,7 @@ namespace SMARTBusinessTest.Data.Migrations
                     b.ToTable("Contract");
                 });
 
-            modelBuilder.Entity("SMARTBusinessTest.Entities.ProcessEquipment", b =>
+            modelBuilder.Entity("SMARTBusinessTest.Domain.Entities.ProcessEquipment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,7 +86,8 @@ namespace SMARTBusinessTest.Data.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("Equipment_Code");
 
                     b.Property<string>("Name")
@@ -96,7 +100,7 @@ namespace SMARTBusinessTest.Data.Migrations
                     b.ToTable("Equipment");
                 });
 
-            modelBuilder.Entity("SMARTBusinessTest.Entities.ProductionFacility", b =>
+            modelBuilder.Entity("SMARTBusinessTest.Domain.Entities.ProductionFacility", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,15 +127,15 @@ namespace SMARTBusinessTest.Data.Migrations
                     b.ToTable("Facility");
                 });
 
-            modelBuilder.Entity("SMARTBusinessTest.Entities.EquipmentUnit", b =>
+            modelBuilder.Entity("SMARTBusinessTest.Domain.Entities.EquipmentUnit", b =>
                 {
-                    b.HasOne("SMARTBusinessTest.Entities.PlacementContract", "Contract")
+                    b.HasOne("SMARTBusinessTest.Domain.Entities.PlacementContract", "Contract")
                         .WithMany("EquipmentUnits")
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SMARTBusinessTest.Entities.ProcessEquipment", "Equipment")
+                    b.HasOne("SMARTBusinessTest.Domain.Entities.ProcessEquipment", "Equipment")
                         .WithMany("Units")
                         .HasForeignKey("EquipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -142,9 +146,9 @@ namespace SMARTBusinessTest.Data.Migrations
                     b.Navigation("Equipment");
                 });
 
-            modelBuilder.Entity("SMARTBusinessTest.Entities.PlacementContract", b =>
+            modelBuilder.Entity("SMARTBusinessTest.Domain.Entities.PlacementContract", b =>
                 {
-                    b.HasOne("SMARTBusinessTest.Entities.ProductionFacility", "ProductionFacility")
+                    b.HasOne("SMARTBusinessTest.Domain.Entities.ProductionFacility", "ProductionFacility")
                         .WithMany("Contracts")
                         .HasForeignKey("FacilityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -153,17 +157,17 @@ namespace SMARTBusinessTest.Data.Migrations
                     b.Navigation("ProductionFacility");
                 });
 
-            modelBuilder.Entity("SMARTBusinessTest.Entities.PlacementContract", b =>
+            modelBuilder.Entity("SMARTBusinessTest.Domain.Entities.PlacementContract", b =>
                 {
                     b.Navigation("EquipmentUnits");
                 });
 
-            modelBuilder.Entity("SMARTBusinessTest.Entities.ProcessEquipment", b =>
+            modelBuilder.Entity("SMARTBusinessTest.Domain.Entities.ProcessEquipment", b =>
                 {
                     b.Navigation("Units");
                 });
 
-            modelBuilder.Entity("SMARTBusinessTest.Entities.ProductionFacility", b =>
+            modelBuilder.Entity("SMARTBusinessTest.Domain.Entities.ProductionFacility", b =>
                 {
                     b.Navigation("Contracts");
                 });
