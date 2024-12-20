@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SMARTBusinessTest.Web\SMARTBusinessTest.Web.csproj" />
-    <ProjectReference Include="..\SMARTBusinessTest\SMARTBusinessTest.Web.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,6 +5,8 @@ using SMARTBusinessTest.Application.Interfaces;
 using SMARTBusinessTest.Application.Services;
 using SMARTBusinessTest.Infrastructure;
 using SMARTBusinessTest.Web.Filters;
+using Microsoft.Extensions.Logging.AzureAppServices;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 
 namespace SMARTBusinessTest.Web
 {
@@ -14,7 +16,13 @@ namespace SMARTBusinessTest.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddLogging();
+            builder.Logging.AddAzureWebAppDiagnostics();
+            builder.Services.Configure<AzureFileLoggerOptions>(options =>
+            {
+                options.FileName = "logs-";
+                options.FileSizeLimit = 50 * 1024;
+                options.RetainedFileCountLimit = 5;
+            });
             builder.Services.AddControllers(options =>
             {
                 options.Filters.Add<ContractExceptionFilter>();
@@ -35,14 +43,11 @@ namespace SMARTBusinessTest.Web
             options.UseSqlServer(builder.Configuration.GetConnectionString(DbConstants.ConnectionSetting)));
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
+            app.UseSwagger();
+            app.UseSwaggerUI( c =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI( c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-                });
-            }
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+            });
 
             app.UseHttpsRedirection();
 

@@ -1,0 +1,10 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=smartbusinesaccstorage;AccountKey=7uyz+Q+P63NaDK+mbbaZxDUYYu2fGhmCjch2auUU3jTMi5nc3ITUyy82EiuI4YIN2Kx2xiVY6+4Z+ASt2TO4RQ==;EndpointSuffix=core.windows.net",
+    "ConnectionStrings:DatabaseConnection": "User ID=sql_function_trigger;Password=AzureEventOnDbChange1!;Initial Catalog=SMARTBusinessDb;Server=smartbusinesstestsqlserver.database.windows.net",
+    "FUNCTIONS_INPROC_NET8_ENABLED": "1",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "WEBSITE_SITE_NAME": "g"
+  }
+}

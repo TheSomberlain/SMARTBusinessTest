@@ -17,8 +17,7 @@ namespace SMARTBusinessTest.Functions
         private QueueClient _queueClient;
         public LogUponFacilityChangeFunction(IConfiguration configuration)
         {
-            var conf = configuration["AzureWebJobsStorage"];
-            _queueClient = new QueueClient(conf, "facilitychangequeue");
+            _queueClient = new QueueClient(configuration["AzureWebJobsStorage"], "facilitychangequeue");
         }
         
         [FunctionName("LogUponFacilityChangeFunction")]
