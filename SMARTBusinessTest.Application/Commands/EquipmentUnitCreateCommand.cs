@@ -1,4 +1,5 @@
 ﻿using SMARTBusinessTest.Application.Constants;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SMARTBusinessTest.Application.Commands
@@ -10,6 +11,7 @@ namespace SMARTBusinessTest.Application.Commands
         [Range(EquipmentUnitCommandConstants.lowBound, 
          EquipmentUnitCommandConstants.hihgBound, 
          ErrorMessage = ExceptionConstants.InvalidRange)]
+        [DefaultValue(0)]
         public int Amount { get; set; }
     }
 }
